@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">hackpack-android</string>
+    <string name="welcome_screen_header">Slider Puzzle Generator</string>
+    <string name="welcome_screen_subtitle">a scalable puzzle solution for the 21st century</string>
+    <string name="begin_button_text">begin</string>
 </resources>
