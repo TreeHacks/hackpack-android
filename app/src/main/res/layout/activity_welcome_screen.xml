@@ -26,7 +26,8 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/begin_button_text"
-            android:textAlignment="center"/>
+            android:textAlignment="center"
+            android:id="@+id/to_camera" />
     </RelativeLayout>
 
 </LinearLayout>

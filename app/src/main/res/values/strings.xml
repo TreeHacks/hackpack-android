@@ -3,4 +3,8 @@
     <string name="welcome_screen_header">Slider Puzzle Generator</string>
     <string name="welcome_screen_subtitle">a scalable puzzle solution for the 21st century</string>
     <string name="begin_button_text">begin</string>
+
+    <string name="title_activity_camera">CameraActivity</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="shutter">Shutter</string>
 </resources>
