@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.peter.hackpack_android", appContext.getPackageName());
+        assertEquals("com.example.peter.com.treehacks.com.treehacks.hackpack_android", appContext.getPackageName());
     }
 }

@@ -7,4 +7,5 @@
     <string name="title_activity_camera">CameraActivity</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="shutter">Shutter</string>
+    <string name="title_activity_main">MainActivity</string>
 </resources>
