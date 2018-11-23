@@ -2,6 +2,7 @@ package com.treehacks.hackpack_android.data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class NotesManager implements INotesManager{
 
@@ -20,6 +21,8 @@ public class NotesManager implements INotesManager{
     }
 
     public void add(Note note){
+        String id = UUID.randomUUID().toString();
+        note.setId(id);
         notesList.add(note);
     }
 
@@ -32,6 +35,16 @@ public class NotesManager implements INotesManager{
 
         return null;
     }
+
+    @Override
+    public void update(Note newNote) {
+        for (Note note:notesList) {
+            if(note.getId().equals(newNote.getId())){
+                note.update(newNote.getTitle(), newNote.getNote());
+            }
+        }
+    }
+
 
     public boolean deleteNoteById(String id){
         for (Note note:notesList) {

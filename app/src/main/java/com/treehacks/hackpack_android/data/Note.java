@@ -8,14 +8,14 @@ public class Note {
     private boolean isPinned = false;
     private boolean isBookmarked = false;
 
-    public Note(String _title, String _note){
-        title = _title;
-        note = _note;
+    public Note(String title, String note){
+        this.title = title;
+        this.note = note;
     }
 
-    public Note update(String _title, String _note){
-        title = _title;
-        note = _note;
+    public Note update(String title, String note){
+        this.title = title;
+        this.note = note;
         return this;
     }
 
@@ -24,6 +24,9 @@ public class Note {
         return id;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;

@@ -5,6 +5,7 @@ import java.util.List;
 public interface INotesManager {
     List<Note> getNotesList();
     void add(Note note);
+    void update(Note note);
     Note getNoteById(String id);
     boolean deleteNoteById(String id);
 }
