@@ -84,5 +84,9 @@ public class NotesActivity extends AppCompatActivity {
         note.update(titleValue,notesValue);
     }
 
-
+    @Override
+    public void onBackPressed() {
+        addNote();
+        super.onBackPressed();
+    }
 }

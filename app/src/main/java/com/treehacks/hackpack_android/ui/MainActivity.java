@@ -47,6 +47,11 @@ public class MainActivity extends AppCompatActivity {
         populateNotes();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        populateNotes();
+    }
 
     private void startTakeNoteActivity(){
         Intent intent = new Intent(this, NotesActivity.class);
@@ -59,14 +64,14 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
-
     private void populateNotes(){
 
         final List<Note> noteList = notesRepo.getNotesList();
 
         final ArrayAdapter<Note> noteArrayAdapter = new ArrayAdapter<Note>(
                 this, R.layout.note_card_view, R.id.note, noteList);
+
+        noteArrayAdapter.notifyDataSetChanged();
 
         noteListView.setAdapter(noteArrayAdapter);
         noteListView.setPadding(8,8,8,8);
