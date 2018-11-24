@@ -1,4 +1,4 @@
-package com.treehacks.hackpack_android;
+package com.treehacks.hackpack_android.ui;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -7,15 +7,16 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.treehacks.hackpack_android.App;
+import com.treehacks.hackpack_android.R;
 import com.treehacks.hackpack_android.data.INotesRepository;
 import com.treehacks.hackpack_android.data.Note;
-import com.treehacks.hackpack_android.data.LocalNotesRepository;
 
 public class NotesActivity extends AppCompatActivity {
 
     private EditText titleView;
     private EditText noteView;
-    private INotesRepository notesManager;
+    private INotesRepository notesRepo;
     private String noteId;
 
     @Override
@@ -29,9 +30,7 @@ public class NotesActivity extends AppCompatActivity {
             noteId = bundle.getString("noteId");
         }
 
-
-        notesManager = LocalNotesRepository.getInstance();
-
+        notesRepo = ((App)getApplication()).getNotesRepository();
 
         titleView = findViewById(R.id.noteTitle);
         noteView = findViewById(R.id.note);
@@ -49,7 +48,7 @@ public class NotesActivity extends AppCompatActivity {
 
 
         if(noteId!=null){
-            Note note = notesManager.getNoteById(noteId);
+            Note note = notesRepo.getNoteById(noteId);
             titleView.setText(note.getTitle());
             noteView.setText(note.getNote());
             return;
@@ -75,13 +74,13 @@ public class NotesActivity extends AppCompatActivity {
         if(titleValue.isEmpty() && notesValue.isEmpty()) return;
 
         Note note = new Note(titleValue,notesValue);
-        notesManager.add(note);
+        notesRepo.add(note);
     }
 
     private void updateNote(){
         String titleValue = titleView.getText().toString();
         String notesValue = noteView.getText().toString();
-        Note note = notesManager.getNoteById(noteId);
+        Note note = notesRepo.getNoteById(noteId);
         note.update(titleValue,notesValue);
     }
 

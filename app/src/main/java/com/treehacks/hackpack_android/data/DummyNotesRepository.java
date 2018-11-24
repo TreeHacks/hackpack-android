@@ -4,19 +4,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class LocalNotesRepository implements INotesRepository {
+public class DummyNotesRepository implements INotesRepository {
 
-    static private LocalNotesRepository instance = null;
+    static private DummyNotesRepository instance = null;
     private List<Note> notesList = new ArrayList<>();
 
-    static public LocalNotesRepository getInstance(){
+    static public DummyNotesRepository getInstance(){
         if(instance == null){
-            instance = new LocalNotesRepository();
+            instance = new DummyNotesRepository();
         }
         return instance;
     }
 
+
     public List<Note> getNotesList() {
+        int count = 50;
+        if(notesList.size()== 0){
+            for(int i=0; i<count; i++){
+                Note n = new Note(UUID.randomUUID().toString(),UUID.randomUUID().toString());
+                String id = UUID.randomUUID().toString();
+                n.setId(id);
+                notesList.add(n);
+            }
+        }
         return notesList;
     }
 
@@ -25,7 +35,6 @@ public class LocalNotesRepository implements INotesRepository {
         note.setId(id);
         notesList.add(note);
     }
-
 
     public Note getNoteById(String id){
         for (Note note:notesList) {
@@ -45,7 +54,6 @@ public class LocalNotesRepository implements INotesRepository {
         }
     }
 
-
     public boolean deleteNoteById(String id){
         for (Note note:notesList) {
             if(note.getId().equals(id)){
@@ -55,4 +63,5 @@ public class LocalNotesRepository implements INotesRepository {
         }
         return false; // Failure | Note with given id not found
     }
+
 }

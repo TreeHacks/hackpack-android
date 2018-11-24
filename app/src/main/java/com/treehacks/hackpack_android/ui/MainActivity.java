@@ -1,4 +1,4 @@
-package com.treehacks.hackpack_android;
+package com.treehacks.hackpack_android.ui;
 
 
 import android.content.Intent;
@@ -11,9 +11,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.treehacks.hackpack_android.App;
+import com.treehacks.hackpack_android.R;
 import com.treehacks.hackpack_android.data.INotesRepository;
 import com.treehacks.hackpack_android.data.Note;
-import com.treehacks.hackpack_android.data.LocalNotesRepository;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ListView noteListView;
 
-    private INotesRepository notesManager;
+    private INotesRepository notesRepo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         TextView takeNoteView = findViewById(R.id.takeNote);
         ImageView takeAudioNoteView = findViewById(R.id.takeAudioNoteView);
 
-        notesManager = LocalNotesRepository.getInstance();
+        notesRepo = ((App)getApplication()).getNotesRepository();
 
         takeNoteView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,14 +59,18 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+
+
     private void populateNotes(){
 
-        final List<Note> noteList = notesManager.getNotesList();
+        final List<Note> noteList = notesRepo.getNotesList();
 
         final ArrayAdapter<Note> noteArrayAdapter = new ArrayAdapter<Note>(
                 this, R.layout.note_card_view, R.id.note, noteList);
 
         noteListView.setAdapter(noteArrayAdapter);
+        noteListView.setPadding(8,8,8,8);
+        noteListView.setDividerHeight(8);
 
         noteListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
