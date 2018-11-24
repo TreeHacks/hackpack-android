@@ -3,23 +3,19 @@ package com.treehacks.hackpack_android;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
-import com.treehacks.hackpack_android.data.INotesManager;
+import com.treehacks.hackpack_android.data.INotesRepository;
 import com.treehacks.hackpack_android.data.Note;
-import com.treehacks.hackpack_android.data.NotesManager;
+import com.treehacks.hackpack_android.data.LocalNotesRepository;
 
 public class NotesActivity extends AppCompatActivity {
 
     private EditText titleView;
     private EditText noteView;
-    private ImageButton imageButton;
-    private INotesManager notesManager;
+    private INotesRepository notesManager;
     private String noteId;
 
     @Override
@@ -34,11 +30,13 @@ public class NotesActivity extends AppCompatActivity {
         }
 
 
-        notesManager = NotesManager.getInstance();
+        notesManager = LocalNotesRepository.getInstance();
+
 
         titleView = findViewById(R.id.noteTitle);
         noteView = findViewById(R.id.note);
-        imageButton = findViewById(R.id.imageButton);
+
+        ImageButton imageButton = findViewById(R.id.imageButton);
 
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,20 +57,7 @@ public class NotesActivity extends AppCompatActivity {
 
         noteView.requestFocus();
 
-//        noteView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//            @Override
-//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//                boolean handled = false;
-//                if (actionId == EditorInfo.IME_ACTION_NEXT) {
-//                    noteView.clearFocus();
-//                    addNote();
-//                    handled = true;
-//                }
-//                return handled;
-//            }
-//        });
     }
-
 
     private void startMainActivity(){
         Intent intent = new Intent(this, MainActivity.class);
@@ -99,8 +84,6 @@ public class NotesActivity extends AppCompatActivity {
         Note note = notesManager.getNoteById(noteId);
         note.update(titleValue,notesValue);
     }
-
-
 
 
 }

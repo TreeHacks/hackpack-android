@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class NotesManager implements INotesManager{
+public class LocalNotesRepository implements INotesRepository {
 
-    static private NotesManager instance = null;
+    static private LocalNotesRepository instance = null;
     private List<Note> notesList = new ArrayList<>();
 
-    static public NotesManager getInstance(){
+    static public LocalNotesRepository getInstance(){
         if(instance == null){
-            instance = new NotesManager();
+            instance = new LocalNotesRepository();
         }
         return instance;
     }

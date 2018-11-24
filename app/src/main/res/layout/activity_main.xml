@@ -19,6 +19,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"></LinearLayout>
 
+    <ListView
+        android:id="@+id/noteListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </ListView>
+
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
         android:layout_width="match_parent"
@@ -52,7 +59,7 @@
                 android:textSize="14sp" />
 
             <ImageView
-                android:id="@+id/takeAudioNote"
+                android:id="@+id/takeAudioNoteView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"

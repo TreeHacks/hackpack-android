@@ -19,6 +19,10 @@ public class Note {
         return this;
     }
 
+    @Override
+    public String toString() {
+        return String.format("%s\n%s",title,note);
+    }
 
     public String getId() {
         return id;
