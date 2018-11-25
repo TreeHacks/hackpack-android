@@ -1,4 +1,10 @@
-package com.treehacks.hackpack_android.data;
+package com.treehacks.hackpack_android.data.repository;
+
+import android.app.Application;
+import android.content.SharedPreferences;
+
+import com.treehacks.hackpack_android.App;
+import com.treehacks.hackpack_android.data.model.Note;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,12 +14,17 @@ public class DummyNotesRepository implements INotesRepository {
 
     static private DummyNotesRepository instance = null;
     private List<Note> notesList = new ArrayList<>();
+    private SharedPreferences sharedPreferences;
 
-    static public DummyNotesRepository getInstance(){
+    static public DummyNotesRepository getInstance(Application application){
         if(instance == null){
-            instance = new DummyNotesRepository();
+            instance = new DummyNotesRepository(application);
         }
         return instance;
+    }
+
+    public DummyNotesRepository(Application application){
+        sharedPreferences = ((App)application).getSharedPrefs();
     }
 
 

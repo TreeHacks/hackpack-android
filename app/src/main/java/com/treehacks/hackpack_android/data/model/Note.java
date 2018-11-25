@@ -1,4 +1,4 @@
-package com.treehacks.hackpack_android.data;
+package com.treehacks.hackpack_android.data.model;
 
 public class Note {
 

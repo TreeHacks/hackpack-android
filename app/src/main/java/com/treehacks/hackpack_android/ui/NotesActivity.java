@@ -9,8 +9,8 @@ import android.widget.EditText;
 
 import com.treehacks.hackpack_android.App;
 import com.treehacks.hackpack_android.R;
-import com.treehacks.hackpack_android.data.INotesRepository;
-import com.treehacks.hackpack_android.data.Note;
+import com.treehacks.hackpack_android.data.repository.INotesRepository;
+import com.treehacks.hackpack_android.data.model.Note;
 
 public class NotesActivity extends AppCompatActivity {
 

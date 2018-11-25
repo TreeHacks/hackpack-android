@@ -13,8 +13,8 @@ import android.widget.TextView;
 
 import com.treehacks.hackpack_android.App;
 import com.treehacks.hackpack_android.R;
-import com.treehacks.hackpack_android.data.INotesRepository;
-import com.treehacks.hackpack_android.data.Note;
+import com.treehacks.hackpack_android.data.repository.INotesRepository;
+import com.treehacks.hackpack_android.data.model.Note;
 
 import java.util.List;
 
@@ -86,5 +86,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+        ((App)getApplication()).saveNotes();
+    }
 }
