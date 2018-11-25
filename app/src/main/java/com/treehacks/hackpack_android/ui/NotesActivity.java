@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 
 import com.treehacks.hackpack_android.App;
 import com.treehacks.hackpack_android.R;
@@ -35,7 +35,13 @@ public class NotesActivity extends AppCompatActivity {
         titleView = findViewById(R.id.noteTitle);
         noteView = findViewById(R.id.note);
 
-        ImageButton imageButton = findViewById(R.id.imageButton);
+        Button imageButton = findViewById(R.id.imageButton);
+
+        imageButton.setText(R.string.add_note);
+
+        if(noteId!=null){
+            imageButton.setText(R.string.update_note);
+        }
 
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
