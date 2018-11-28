@@ -6,19 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.MainActivity">
 
-    <LinearLayout
-        android:id="@+id/notesContainer"
-        android:layout_width="358dp"
-        android:layout_height="428dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/card_view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></LinearLayout>
-
     <ListView
         android:id="@+id/noteListView"
         android:layout_width="match_parent"
@@ -65,10 +52,9 @@
                 android:layout_margin="2dp"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
-                android:contentDescription="TakeAudioNotes"
+                android:contentDescription="@string/audio_note_placeholder"
                 android:cropToPadding="false"
                 android:tint="@color/colorPrimary"
-                android:contextClickable="true"
                 android:padding="2dp"
                 android:scaleType="center"
                 android:visibility="visible"
