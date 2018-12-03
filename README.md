@@ -42,8 +42,6 @@ You'll see two files with this name: one for the project and one for the "app" m
 Press the run button (circled in following figure) and you will see a hello world written in middle of screen. You will need to add a emulator/device to run the app. Just follow the default steps to add emulator or plug your android device using usb.
 ![](/docs_assets/run.png)
 
-
-
 ## Now Let's Start Building our Note Taking App - *HackerPad*
 
 Let's define our app design. It will be two activity application - 
@@ -140,33 +138,274 @@ Similary, for notes activity, create a new activity by **File > New > Activity >
 
 Edit activity_notes with this repository's activity_notes file. Its a simple layout file with two field to take user inputs as title & note along with a button to add/update the note.
 
+### Let's Build our Model 
+
+Model refers to the Plain objects needed for the application which in our case is clearly a Note.
+So, we will define a Note class with following fields:
+
+- Id - A string feild which will be the identifier for a particular note
+- Title - A string feild which will be the title for our note
+- message - A string feild which will be the message for our note
+- isPinned - A boolean feild which will show if a note is pinned or not.
+- isBookmarked - A boolean feild which will show if a note is bookmarked or not.
+
+Create a new **data** directory in **app > java > packageName**. In this directoy we will create two more directory, **model** which will contain our plain object and **repository** which will handle our data storage. 
+Copy the [Note.java](https://github.com/navi25/hackpack-android/blob/master/app/src/main/java/com/treehacks/hackpack_android/data/model/Note.java) file present in this repository into your project. 
+
+### Now lets define our Data handling
+
+We will be following Reposiotry pattern to handle our data which is best explained by the following diagram:
+
+![](/docs_assets/repoPat.png)
+
+Now let's create a interface first to define our Data handling functions. Create **INotesRepository** in the repository directory created in data folder and define it as follows:
+
+```java
+public interface INotesRepository {
+    List<Note> getNotesList();
+    void add(Note note);
+    void update(Note note);
+    Note getNoteById(String id);
+    boolean deleteNoteById(String id);
+}
+```
+
+As clear by the function signatures, this interface defines all the necessary operations we want to do with our data like Adding a new note, Updating it, Retreving it by Id, Deleting it and also Getting all notes.
+
+Lets implement these in a **LocalNotesRepository** class.
+
+Copy LocalNotesRepository.java file to your **repository** directory. Remember to change the package name. 
+The following code is self explanatory, we have a arraylist of Note and we are using it for doing our CRUD operations.
+
+```java
+
+ 	private List<Note> notesList = new ArrayList<>();
+
+    public void add(Note note){
+        String id = UUID.randomUUID().toString();
+        note.setId(id);
+        notesList.add(note);
+    }
+
+    public Note getNoteById(String id){
+        for (Note note:notesList) {
+            if(note.getId().equals(id)){
+                return note;
+            }
+        }
+
+        return null;
+    }
+
+    public void update(Note newNote) {
+        for (Note note:notesList) {
+            if(note.getId().equals(newNote.getId())){
+                note.update(newNote.getTitle(), newNote.getNote());
+            }
+        }
+    }
+
+
+    public boolean deleteNoteById(String id){
+        for (Note note:notesList) {
+            if(note.getId().equals(id)){
+                notesList.remove(note);
+                return true; //Success | Note with given id successfully deleted
+            }
+        }
+        return false; // Failure | Note with given id not found
+    }
+```
+
+### Local Storage
+
+For Storage we will use Android **Shared Preferences** which is a small collection of Key-Value pair available to the apps and is good as storage for some simple prototyping usecases. Otherwise generally we need to access Sqlite3 database on android which comes inbuilt with every android. But for simplicity we will be using this.
+
+We need to get access to this object from Android and we will do it in **App** file which will be entry point for our application where we would define all our top level objects. 
+
+Copy **App** class present in **app>Java>packageName** to your **app>Java>packageName** 
+
+```java
+public class App extends Application {
+
+    //...
+    
+      public String getPrefKey() { return prefKey; }
+    
+      public SharedPreferences getSharedPrefs(){
+        return this.getSharedPreferences(BuildConfig.APPLICATION_ID,Context.MODE_PRIVATE);
+      }
+
+    public INotesRepository getNotesRepository(){
+        if(testingMode){
+            return DummyNotesRepository.getInstance(this);
+        }
+        return LocalNotesRepository.getInstance(this);
+    }
+
+    public void saveNotes(){
+        List<Note> noteList = getNotesRepository().getNotesList();
+        Gson gson = new Gson();
+        String json = gson.toJson(noteList);
+        getSharedPrefs().edit()
+                .putString(prefKey,json)
+                .apply();
+    }
+    
+}
+```
+
+As shown in above code, we have getter for our repositories and SharedPreferences as required and **saveNotes()** method is called when we want to store our notes on local storage. Also, since SharedPreferences can save standard objects, so for our custom Notes object we are using GSON serailiser to convert it to string and storing it as string. By, using GSON we can also easily create our Note Object back from a string.
+
+### Integrating the app
+
+Now its time to integrate various components and make it work. For that create a activity file using **File > New > Activity > Blank Activity** and call it NotesActivity. So now we have two Activity file - Main and Notes.
+
+Now lets see what we are doing there. This is MainActivity. For brevity, I am showing only necessary codes.
+
+```java
+ 	//MainActivity.java
+    private ListView noteListView;
+
+    private INotesRepository notesRepo;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        //Setting up references for the views present in activity_main layout file
+        noteListView = findViewById(R.id.noteListView);
+        TextView takeNoteView = findViewById(R.id.takeNote);
+        ImageView takeAudioNoteView = findViewById(R.id.takeAudioNoteView);
+
+        //Getting reference of NotesRepository from App class
+        notesRepo = ((App)getApplication()).getNotesRepository();
+
+        /**
+        * Setting up OnClickListener to handle onClick event for TakeNoteView
+        * It start NotesActivity on onClick event.
+        **/
+        takeNoteView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startTakeNoteActivity();
+            }
+        });
+
+        // Populate the current listview with notes.
+        populateNotes();
+    }
+```
+
+Here we have defined variables to access our previously created noteListView and created a reference for notesRepo and then in onCreate() method which is a activity lifecycle callback. we are setting up the references appropriately.
+
+```java
+	//This is the function to start a new activity from current main activity
+	private void startTakeNoteActivity(){
+        //This is the intent class which is a special object to start a new action in Android
+        Intent intent = new Intent(this, NotesActivity.class);
+        //This is a in built function that starts a new activity as per the intent specs
+        startActivity(intent);
+    }
+
+	//This is overloaded function to open note activity. This will be used for updating notes
+    private void startTakeNoteActivity(Note note){
+        Intent intent = new Intent(this, NotesActivity.class);
+        intent.putExtra("noteId",note.getId());
+        startActivity(intent);
+    }
+
+	//This is function to show current notes in a list view
+    private void populateNotes(){
+		
+        //Get reference to the Note List from notes repository
+        final List<Note> noteList = notesRepo.getNotesList();
+
+        /**
+        * This is the adapter that creates the passed view (R.layout.note_card_view)
+        * and populate a Text view present in the view with the passed data objects
+        **/
+        final ArrayAdapter<Note> noteArrayAdapter = new ArrayAdapter<Note>(
+                this, R.layout.note_card_view, R.id.note, noteList);
+
+        
+        noteArrayAdapter.notifyDataSetChanged();
+
+        //Some decoration functions for decorating our Noteview
+        noteListView.setAdapter(noteArrayAdapter);
+        noteListView.setPadding(8,8,8,8);
+        noteListView.setDividerHeight(8);
+
+        //Setting Click listener for individual Note Item
+        noteListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+               	//Get Note object present at that position
+                Note note = (Note)parent.getAdapter().getItem(position);
+                //Start Note Activity to update it 
+                startTakeNoteActivity(note);
+            }
+        });
+    }
+
+```
+
+Now lets check how we are implementing NotesActitivty.java
+
+```java
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_notes);
+        
+        //Get Reference to the notes repository
+        notesRepo = ((App)getApplication()).getNotesRepository();
+
+        //Set references to TextView defined in activity_notes layout file
+        titleView = findViewById(R.id.noteTitle);
+        noteView = findViewById(R.id.note);
+
+        Button imageButton = findViewById(R.id.imageButton);
+        imageButton.setText(R.string.add_note);
+
+       //Set on Click Listener for ImageButton click which is Add button
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Add Note and return to the main activity
+                addNote();
+                startMainActivity();
+                return;
+            }
+        });
+
+        /**
+        * To bring focus to note view. This brings the functionlity of writing as soon as 
+        * this activity is launched.
+        **/
+        noteView.requestFocus();
+
+    }
+
+
+```
 
 
 
+## Hit Run
 
+Now hit run and you can see a working prototype of your Note Taking application - **HackerPad**
 
+### More Resources
 
+Android development can be overwhelming in the beginning but there are lots of learning resources available on internet. Feel free to go through them:
 
+- [Official Android Documenation](https://developer.android.com/guide/): - One of the best
+- [Android Fundamentals Training by Google Codelab](https://developer.android.com/courses/fundamentals-training/toc-v2) - A full list of code lab style tutorial by Google for teaching android from fundamentals to advanced. (Highly recommended!)
+- [Sunshine Weather App - Google CodeLab](https://codelabs.developers.google.com/codelabs/build-app-with-arch-components/index.html?index=..%2F..index#0) - A good end to end app following recommended architecture pattern.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+**_Happy Hacking!_**
 
 
 
