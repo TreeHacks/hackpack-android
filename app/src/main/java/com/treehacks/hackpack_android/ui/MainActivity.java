@@ -33,7 +33,9 @@ public class MainActivity extends AppCompatActivity {
 
         noteListView = findViewById(R.id.noteListView);
         TextView takeNoteView = findViewById(R.id.takeNote);
-        ImageView takeAudioNoteView = findViewById(R.id.takeAudioNoteView);
+
+        //You can use below AudioNoteView to add audio note functionality to the app
+//        ImageView takeAudioNoteView = findViewById(R.id.takeAudioNoteView);
 
         notesRepo = ((App)getApplication()).getNotesRepository();
 

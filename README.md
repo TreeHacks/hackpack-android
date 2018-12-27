@@ -120,7 +120,7 @@ Edit **app > res > layout > activity_main.xml ** as follows and let's see what w
                 android:tint="@color/colorPrimary"
                 android:padding="2dp"
                 android:scaleType="center"
-                android:visibility="visible"
+                android:visibility="invisible"
                 app:srcCompat="@drawable/ic_action_name" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
@@ -277,7 +277,8 @@ Now lets see what we are doing there. This is MainActivity. For brevity, I am sh
         //Setting up references for the views present in activity_main layout file
         noteListView = findViewById(R.id.noteListView);
         TextView takeNoteView = findViewById(R.id.takeNote);
-        ImageView takeAudioNoteView = findViewById(R.id.takeAudioNoteView);
+        //You can use below AudioNoteView to add audio note functionality to the app
+        //ImageView takeAudioNoteView = findViewById(R.id.takeAudioNoteView);
 
         //Getting reference of NotesRepository from App class
         notesRepo = ((App)getApplication()).getNotesRepository();
@@ -396,6 +397,15 @@ Now lets check how we are implementing NotesActitivty.java
 ## Hit Run
 
 Now hit run and you can see a working prototype of your Note Taking application - **HackerPad**
+
+## What Next
+
+There are lot of things that you can do on top of this application.
+
+1. [Google Search API](https://developers.google.com/custom-search/) : Use Google Search API to bring search fucntionalties to your app.
+2. [Google Speech API](https://cloud.google.com/speech-to-text/docs/) : Use Google Speech API to take audio notes or translate a given speech into English Text.
+3. [Google Voice API](https://developers.google.com/voice-actions/system/) : Use Google Voice API to add custom functionalities on "Ok Google" Command.
+4. [Google APIs for Android](https://developers.google.com/android/) : A one-stop collection for all the google apis documentation and codelabs for Android.
 
 ### More Resources
 
