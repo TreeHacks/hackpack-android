@@ -1,10 +1,8 @@
 <resources>
     <string name="app_name">hackpack-android</string>
-    <string name="welcome_screen_header">Slider Puzzle Generator</string>
-    <string name="welcome_screen_subtitle">a scalable puzzle solution for the 21st century</string>
-    <string name="begin_button_text">begin</string>
-
-    <string name="title_activity_camera">CameraActivity</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="shutter">Shutter</string>
+    <string name="add_note_placeholder">&#160;&#160;&#160;Take a note...</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="add_note">Add</string>
+    <string name="update_note">Update</string>
+    <string name="audio_note_placeholder">TakeAudioNotes</string>
 </resources>
